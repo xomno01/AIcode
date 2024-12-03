@@ -1,0 +1,237 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Bot, 
+  Zap, 
+  Rocket, 
+  Code, 
+  TrendingUp, 
+  Star,
+  Cpu,
+  Globe,
+  Layers 
+} from 'lucide-react';
+
+const FloatingIcons = () => {
+  return (
+    <motion.div 
+      className="fixed inset-0 pointer-events-none z-0"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 0.3 }}
+      transition={{ duration: 2 }}
+    >
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute text-purple-500/30"
+          initial={{ 
+            x: Math.random() * window.innerWidth, 
+            y: Math.random() * window.innerHeight,
+            scale: Math.random() * 2
+          }}
+          animate={{ 
+            y: [0, 50, 0],
+            rotate: [0, 360],
+            transition: { 
+              duration: Math.random() * 10 + 5, 
+              repeat: Infinity,
+              ease: "easeInOut"
+            }
+          }}
+        >
+          {i % 3 === 0 ? <Cpu size={40} /> : i % 2 === 0 ? <Code size={40} /> : <Bot size={40} />}
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
+
+const AICodeCoin = () => {
+  const [activeSection, setActiveSection] = useState('home');
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePosition({ x: event.clientX, y: event.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 text-white overflow-hidden relative">
+      <FloatingIcons />
+      
+      {/* Gradient Mouse Follow Effect */}
+      <motion.div 
+        className="fixed pointer-events-none z-0 w-96 h-96 bg-white/10 rounded-full blur-3xl"
+        style={{
+          left: mousePosition.x - 192,
+          top: mousePosition.y - 192,
+          background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%)'
+        }}
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.7, 0.5]
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      />
+
+      {/* Header Navigation */}
+      <motion.header 
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+        className="fixed w-full z-50 bg-black/30 backdrop-blur-md"
+      >
+        <nav className="container mx-auto flex justify-between items-center p-4">
+          <motion.div 
+            className="flex items-center space-x-2"
+            whileHover={{ scale: 1.1, rotate: 5 }}
+          >
+            <Bot className="text-lime-400" />
+            <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">
+              AICODE
+            </h1>
+          </motion.div>
+          <ul className="flex space-x-6">
+            {['Home', 'Tokenomics', 'Roadmap', 'Community'].map(item => (
+              <motion.li 
+                key={item} 
+                className="cursor-pointer hover:text-lime-400 transition"
+                whileHover={{ scale: 1.2, rotateY: 15 }}
+                onClick={() => setActiveSection(item.toLowerCase())}
+              >
+                {item}
+              </motion.li>
+            ))}
+          </ul>
+        </nav>
+      </motion.header>
+
+      {/* Hero Section */}
+      <section className="min-h-screen flex items-center justify-center text-center relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1 }}
+          className="relative z-10 container mx-auto px-4"
+        >
+          <motion.h2 
+            className="text-6xl font-extrabold mb-4"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            AICODE: The Future of <span className="text-lime-400">Coding Memes</span>
+          </motion.h2>
+          <motion.p 
+            className="text-xl mb-8 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+          >
+            Revolutionizing the blockchain with AI-powered coding memes. 
+            Where humor meets technology!
+          </motion.p>
+          <div className="flex justify-center space-x-4">
+            <motion.button 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-lime-500 hover:bg-lime-600 px-8 py-3 rounded-full flex items-center space-x-2"
+            >
+              <Rocket /> <span>Buy AICODE</span>
+            </motion.button>
+            <motion.button 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="border-2 border-white hover:bg-white/20 px-8 py-3 rounded-full flex items-center space-x-2"
+            >
+              <Code /> <span>Whitepaper</span>
+            </motion.button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <section className="container mx-auto py-16 px-4">
+        <motion.h3 
+          className="text-4xl text-center mb-12 font-bold"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          Why <span className="text-lime-400">AICODE</span>?
+        </motion.h3>
+        <motion.div 
+          className="grid md:grid-cols-3 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { 
+              opacity: 1,
+              transition: {
+                delayChildren: 0.3,
+                staggerChildren: 0.2
+              }
+            }
+          }}
+        >
+          {[
+            {icon: <Zap />, title: 'AI-Powered', desc: 'Generative memes powered by advanced AI algorithms'},
+            {icon: <TrendingUp />, title: 'Dynamic Growth', desc: 'Community-driven token with innovative tokenomics'},
+            {icon: <Star />, title: 'Unique Utility', desc: 'Rewards for contributing to open-source AI projects'}
+          ].map((feature, index) => (
+            <motion.div 
+              key={index} 
+              variants={{
+                hidden: { opacity: 0, y: 50 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              className="bg-white/10 p-6 rounded-xl text-center transform transition hover:bg-white/20"
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div 
+                className="text-lime-400 text-4xl mb-4 flex justify-center"
+                animate={{ 
+                  rotate: [0, 360],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                {feature.icon}
+              </motion.div>
+              <h4 className="text-2xl mb-2 font-bold">{feature.title}</h4>
+              <p>{feature.desc}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <motion.footer 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="bg-black/30 py-8 text-center"
+      >
+        <p>© 2024 AICODE. Meme Coin Revolution.</p>
+      </motion.footer>
+    </div>
+  );
+};
+
+export default AICodeCoin;
